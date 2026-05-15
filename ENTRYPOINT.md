@@ -56,7 +56,78 @@ Regras globais da WB + contexto local do projeto alvo
 
 Se o projeto alvo ainda não possuir contexto local `.workbench`, a IA deve propor a criação dessa estrutura antes de avançar para implementação.
 
-## 4. Regra de bootloader para repositório alvo
+## 4. Regra de governança supervisionada da `.workbench`
+
+Os arquivos da pasta `.workbench` são arquivos oficiais de governança do projeto.
+
+Eles representam:
+
+- estado oficial do projeto;
+- workflow ativo;
+- contexto persistente;
+- histórico estrutural;
+- estágio atual;
+- decisões de engenharia.
+
+Durante implementação:
+
+```text
+Agentes implementadores NÃO devem alterar silenciosamente os arquivos `.workbench`.
+```
+
+Fluxo obrigatório:
+
+```text
+Implementação
+↓
+Validação
+↓
+Relatório da etapa
+↓
+Sugestão explícita de atualização da governança
+↓
+Aprovação humana
+↓
+Atualização oficial da `.workbench`
+```
+
+Regra obrigatória:
+
+```text
+Toda alteração estrutural na `.workbench` deve ser:
+- explícita;
+- auditável;
+- supervisionada;
+- confirmada pelo supervisor humano.
+```
+
+Agentes implementadores podem:
+
+```text
+- sugerir alterações;
+- gerar relatórios;
+- propor atualização de etapa;
+- propor atualização de CURRENT_STAGE.md;
+- propor atualização de workflow.
+```
+
+Mas não devem:
+
+```text
+- consolidar silenciosamente governança;
+- reescrever histórico do projeto;
+- alterar workflow ativo sem autorização;
+- alterar escopo oficialmente sem aprovação.
+```
+
+O objetivo desta regra é evitar:
+
+- auto-governança silenciosa da IA;
+- divergência entre implementação e estado oficial;
+- perda de rastreabilidade;
+- reescrita não supervisionada do histórico do projeto.
+
+## 5. Regra de bootloader para repositório alvo
 
 Antes de iniciar entrevista técnica, arquitetura, documentação, workflow específico ou implementação, a IA deve garantir que existe um repositório alvo para o projeto.
 
@@ -97,7 +168,7 @@ Se o usuário já possui pasta local sincronizada, a IA deve solicitar:
 
 Enquanto o repositório alvo e a pasta local sincronizada não forem confirmados, a IA não deve avançar para requisitos, arquitetura ou implementação.
 
-## 5. Regra de acesso ao repositório alvo
+## 6. Regra de acesso ao repositório alvo
 
 Após receber as informações do repositório alvo, a IA deve tratar todos os bloqueios de acesso antes de continuar.
 
@@ -115,28 +186,7 @@ A IA deve verificar ou orientar o usuário a verificar:
 
 Se houver bloqueio de acesso, a IA deve parar o fluxo de projeto e orientar a correção antes de avançar.
 
-Exemplos de bloqueios:
-
-- repositório inexistente;
-- URL errada;
-- repositório privado sem permissão;
-- autenticação Git ausente;
-- token expirado;
-- branch inexistente;
-- pasta local não sincronizada;
-- ausência de permissão de escrita;
-- workspace local com alterações pendentes.
-
-A IA pode oferecer dois modos de correção:
-
-```text
-Caminho A — comandos para CMD/PowerShell/Git Bash.
-Caminho B — orientação passo a passo sem comandos.
-```
-
-Somente após confirmar o acesso ao repositório alvo, a IA pode propor ou criar a estrutura inicial `.workbench` no projeto.
-
-## 6. Criação inicial da pasta .workbench no projeto alvo
+## 7. Criação inicial da pasta .workbench no projeto alvo
 
 Uma vez confirmado o acesso ao repositório alvo e à pasta local sincronizada, a IA deve informar que criará ou orientará a criação da pasta local de governança do projeto:
 
@@ -152,19 +202,6 @@ Arquivos iniciais obrigatórios:
 .workbench/CURRENT_STAGE.md
 ```
 
-Finalidade dos arquivos:
-
-```text
-PROJECT_ENTRYPOINT.md
-Define o contexto geral do projeto alvo, suas regras locais, objetivo, escopo e o próximo contexto a ser lido.
-
-PROJECT_WORKFLOW.md
-Registra quais diretrizes, workflows, skills e ramificações da WB estão ativas para este projeto.
-
-CURRENT_STAGE.md
-Registra a etapa atual, objetivo imediato, escopo da etapa, fora de escopo, entregáveis e próximo passo.
-```
-
 Regra obrigatória:
 
 ```text
@@ -178,14 +215,6 @@ Se a IA possuir permissão de escrita no repositório alvo, ela própria deve cr
 
 A IA não deve solicitar ao usuário que crie manualmente os arquivos `.workbench` quando a própria IA puder fazê-lo.
 
-Isso evita:
-
-- erros de nomenclatura;
-- erros de caminho;
-- divergência estrutural;
-- arquivos incompletos;
-- inconsistência entre projetos.
-
 Somente quando a IA não possuir permissão de escrita ela poderá:
 
 ```text
@@ -194,7 +223,7 @@ Somente quando a IA não possuir permissão de escrita ela poderá:
 - solicitar intervenção humana.
 ```
 
-## 7. Princípios invariáveis
+## 8. Princípios invariáveis
 
 - Não inventar arquitetura.
 - Não assumir requisitos não informados.
@@ -210,8 +239,9 @@ Somente quando a IA não possuir permissão de escrita ela poderá:
 - Garantir repositório alvo e pasta local sincronizada antes de iniciar workflows de projeto novo.
 - Resolver bloqueios de acesso ao repositório alvo antes de criar contexto local.
 - Criar automaticamente a estrutura `.workbench` quando houver permissão de escrita.
+- Nunca alterar silenciosamente arquivos oficiais de governança.
 
-## 8. Fluxo universal
+## 9. Fluxo universal
 
 O fluxo base da Workbench é:
 
@@ -250,148 +280,18 @@ Implementação controlada
 ↓
 Validação
 ↓
+Relatório explícito da etapa
+↓
+Sugestão supervisionada de atualização da governança
+↓
+Aprovação humana
+↓
+Atualização oficial da `.workbench`
+↓
 Consolidação
 ```
 
-## 9. Comportamento esperado da IA
-
-Ao ler este arquivo, a IA deve assumir comportamento de agente de governança inicial.
-
-Ela deve:
-
-1. identificar se o usuário quer criar um novo projeto, auditar um projeto existente ou continuar uma etapa;
-2. identificar qual é o repositório da WB;
-3. identificar qual é o repositório do projeto alvo, quando houver;
-4. garantir que projeto novo tenha repositório alvo e pasta local sincronizada antes de avançar;
-5. tratar bloqueios de acesso ao repositório alvo;
-6. verificar se o projeto alvo possui contexto local `.workbench`;
-7. criar automaticamente os arquivos iniciais `.workbench` quando houver permissão de escrita;
-8. fazer perguntas de alto nível quando o contexto ainda estiver aberto;
-9. ajudar o humano a escolher o melhor caminho quando houver incerteza;
-10. propor ramificações de workflow proporcionais à complexidade;
-11. registrar decisões no projeto destino quando autorizado;
-12. preparar o caminho para agentes especializados, como arquiteto, documentador, validador ou codador.
-
-## 10. Encaminhamento contextual progressivo
-
-A IA deve carregar contexto de forma progressiva, evitando mega-prompts e evitando misturar responsabilidades.
-
-Fluxo esperado de leitura:
-
-```text
-AI_WORKBENCH/ENTRYPOINT.md
-↓
-ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md, se existir
-↓
-ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md, se existir
-↓
-ProjetoAlvo/.workbench/CURRENT_STAGE.md, se existir
-↓
-AI_WORKBENCH/workflows/[ramificação escolhida], quando existir
-↓
-AI_WORKBENCH/skills/[skill necessária], quando existir
-```
-
-Cada arquivo de contexto deve, ao final, indicar qual é o próximo arquivo ou contexto que a IA deve consultar.
-
-## 11. Ramificação de workflow
-
-A Workbench deve iniciar sempre pelo mesmo ponto, mas pode seguir caminhos diferentes conforme o projeto.
-
-Exemplos de categorias futuras:
-
-- Arduino pequeno;
-- embarcado complexo;
-- aplicação web;
-- aplicação mobile;
-- API backend;
-- aplicação desktop;
-- sistema distribuído;
-- projeto multi-repositório;
-- projeto legado existente.
-
-A escolha da ramificação deve considerar:
-
-- finalidade do software;
-- público-alvo;
-- tecnologia desejada;
-- integrações necessárias;
-- risco técnico;
-- tamanho do projeto;
-- necessidade de testes;
-- necessidade de documentação;
-- possibilidade de MVP.
-
-## 12. Arquivos locais do projeto destino
-
-Cada projeto governado pela AI_WORKBENCH deve possuir uma pasta local:
-
-```text
-.workbench/
-```
-
-Arquivos mínimos esperados:
-
-```text
-.workbench/PROJECT_ENTRYPOINT.md
-.workbench/PROJECT_WORKFLOW.md
-.workbench/CURRENT_STAGE.md
-```
-
-Esses arquivos pertencem ao projeto destino, não à Workbench global.
-
-Eles registram quais diretrizes da Workbench estão sendo usadas, qual ramificação foi escolhida, qual contexto local governa o projeto e qual etapa está ativa.
-
-## 13. Regra para projeto novo
-
-Para projeto novo, a IA deve:
-
-1. conduzir o bootloader da WB;
-2. confirmar se existe repositório alvo;
-3. orientar criação/clonagem do repositório quando necessário;
-4. confirmar a existência de pasta local sincronizada com Git;
-5. tratar bloqueios de acesso ao repositório alvo;
-6. criar automaticamente a estrutura `.workbench` quando houver permissão;
-7. conduzir entrevista inicial;
-8. classificar o tipo de projeto;
-9. propor uma ramificação de workflow;
-10. pedir confirmação humana;
-11. criar ou atualizar os arquivos `.workbench` do projeto destino;
-12. iniciar a documentação mínima do projeto.
-
-## 14. Regra para projeto existente
-
-Para projeto existente, a IA deve:
-
-1. ler o ENTRYPOINT da Workbench;
-2. identificar o repositório alvo e o caminho local do projeto;
-3. tratar bloqueios de acesso ao repositório alvo;
-4. ler os arquivos `.workbench` do projeto, se existirem;
-5. se não existirem, propor criação após auditoria inicial;
-6. auditar a estrutura atual antes de modificar;
-7. apontar divergências entre projeto real e regras da Workbench;
-8. classificar riscos;
-9. aguardar decisão humana antes de corrigir.
-
-## 15. Critérios de parada
-
-A IA deve parar e registrar lacuna quando encontrar:
-
-- requisito indefinido;
-- conflito entre regras;
-- ausência de confirmação humana em decisão estrutural;
-- escopo ambíguo;
-- tecnologia não definida;
-- arquitetura incompatível com a complexidade do projeto;
-- divergência crítica em projeto existente;
-- ausência de contexto local `.workbench` em projeto que já deveria estar governado pela WB;
-- ausência de repositório alvo para projeto novo;
-- ausência de pasta local sincronizada com Git para projeto novo;
-- bloqueio de acesso ao repositório alvo;
-- ausência de permissão de escrita quando a ação exigir criação ou alteração de arquivos;
-- estado Git local inconsistente antes de alteração estrutural.
-
-## 16. Próximo passo após leitura
+## 10. Próximo passo após leitura
 
 Após ler este arquivo, a IA deve responder de forma objetiva:
 
