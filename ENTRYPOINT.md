@@ -54,7 +54,74 @@ A IA nunca deve usar apenas um desses contextos. Antes de qualquer ação, ela d
 Regras globais da WB + contexto local do projeto alvo
 ```
 
-## 4. Regra de separação entre bootstrap e entrevista
+## 4. Projetos novos e projetos em andamento
+
+### Projeto novo
+
+Para projeto novo, este ENTRYPOINT deve ser usado apenas até concluir o bootstrap inicial.
+
+O bootstrap inicial inclui:
+
+```text
+- validar ou criar repositório remoto;
+- validar ou criar pasta local;
+- sincronizar pasta local com Git;
+- validar acesso de leitura e escrita;
+- criar a pasta `.workbench`;
+- criar arquivos obrigatórios iniciais;
+- registrar contexto mínimo inicial.
+```
+
+Após isso, o fluxo principal deve sair deste ENTRYPOINT global e passar para:
+
+```text
+ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md
+```
+
+### Projeto em andamento
+
+Para projeto em andamento, a IA deve iniciar preferencialmente pelo contexto local do projeto:
+
+```text
+ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md
+```
+
+O ENTRYPOINT global da WB deve ser usado novamente apenas quando:
+
+```text
+- o projeto ainda não possuir `.workbench`;
+- houver falha de contexto local;
+- houver necessidade de consultar regra global;
+- houver necessidade de escolher nova ramificação;
+- houver necessidade de criar ou atualizar governança de processo.
+```
+
+## 5. PROJECT_ENTRYPOINT como ponto de entrada local
+
+Após o bootstrap, o `PROJECT_ENTRYPOINT.md` do projeto alvo passa a ser o ponto de entrada principal daquele projeto.
+
+Ele deve conter obrigatoriamente:
+
+```text
+- nome do projeto;
+- repositório remoto do projeto;
+- caminho local do projeto;
+- branch principal;
+- repositório da WB usado como referência;
+- caminho do ENTRYPOINT global da WB;
+- workflow ativo, quando definido;
+- instruções de onde procurar regras quando faltar cobertura local;
+- próximo contexto local a ser lido.
+```
+
+O PROJECT_ENTRYPOINT deve deixar claro:
+
+```text
+As regras locais deste projeto são verdadeiras enquanto sua cobertura existir.
+Quando a cobertura acabar, consultar a WB antes de decidir.
+```
+
+## 6. Regra de separação entre bootstrap e entrevista
 
 O bootloader da WB NÃO deve misturar:
 
@@ -85,7 +152,7 @@ Essas informações pertencem à etapa posterior:
 Entrevista inicial do projeto
 ```
 
-## 5. Informações mínimas obrigatórias para bootstrap
+## 7. Informações mínimas obrigatórias para bootstrap
 
 Para executar o bootstrap inicial do projeto, a IA deve solicitar apenas:
 
@@ -106,7 +173,7 @@ Com essas informações, a IA já deve ser capaz de:
 - registrar contexto mínimo inicial.
 ```
 
-## 6. Contexto mínimo inicial do projeto
+## 8. Contexto mínimo inicial do projeto
 
 Após o bootstrap, mas antes da entrevista funcional, os arquivos `.workbench` devem conter apenas contexto mínimo.
 
@@ -115,10 +182,12 @@ Exemplo esperado:
 ```text
 PROJECT_ENTRYPOINT.md
 - nome do projeto
-- repositório
+- repositório do projeto
 - branch
 - caminho local
+- repositório da WB de referência
 - status: aguardando entrevista inicial
+- próximo contexto: PROJECT_WORKFLOW.md
 
 PROJECT_WORKFLOW.md
 - workflow: não definido
@@ -132,7 +201,7 @@ CURRENT_STAGE.md
 
 A IA não deve inventar requisitos funcionais antes da entrevista do projeto.
 
-## 7. Regra de governança supervisionada da `.workbench`
+## 9. Regra de governança supervisionada da `.workbench`
 
 Os arquivos da pasta `.workbench` são arquivos oficiais de governança do projeto.
 
@@ -167,7 +236,7 @@ Aprovação humana
 Atualização oficial da `.workbench`
 ```
 
-## 8. Regra de bootloader para repositório alvo
+## 10. Regra de bootloader para repositório alvo
 
 Antes de iniciar entrevista técnica, arquitetura, documentação, workflow específico ou implementação, a IA deve garantir que existe um repositório alvo para o projeto.
 
@@ -181,7 +250,7 @@ A IA deve verificar:
 4. se a pasta local está acessível ao usuário;
 5. se a pasta local poderá receber a estrutura `.workbench`.
 
-## 9. Regra de acesso ao repositório alvo
+## 11. Regra de acesso ao repositório alvo
 
 Após receber as informações do repositório alvo, a IA deve tratar todos os bloqueios de acesso antes de continuar.
 
@@ -196,7 +265,7 @@ A IA deve verificar ou orientar o usuário a verificar:
 7. se `git clone`, `git pull`, `git status` e `git push` funcionam;
 8. se a branch principal está correta.
 
-## 10. Criação inicial da pasta .workbench no projeto alvo
+## 12. Criação inicial da pasta .workbench no projeto alvo
 
 Uma vez confirmado o acesso ao repositório alvo e à pasta local sincronizada, a IA deve criar automaticamente:
 
@@ -221,7 +290,7 @@ Se a IA possuir permissão de escrita, ela própria deve:
 - registrar commits iniciais de governança.
 ```
 
-## 11. Biblioteca de workflows da WB
+## 13. Biblioteca de workflows da WB
 
 A WB deve possuir uma biblioteca de definições para diferentes tipos de projeto.
 
@@ -243,7 +312,7 @@ workflows/mobile-projects/
 
 O projeto alvo deve armazenar apenas qual caminho da WB está sendo usado e quais decisões locais foram tomadas.
 
-## 12. Regra de cobertura do contexto local
+## 14. Regra de cobertura do contexto local
 
 As regras do projeto alvo registradas em `.workbench` são verdadeiras enquanto estiverem dentro da cobertura daquele contexto.
 
@@ -252,38 +321,44 @@ Se a IA encontrar uma situação não coberta pelo contexto local, ela deve:
 ```text
 1. parar;
 2. registrar a lacuna;
-3. consultar a biblioteca de workflows da WB;
-4. orientar-se com o operador humano;
-5. escolher ou confirmar o próximo caminho;
-6. registrar a nova decisão no `.workbench` local, com aprovação explícita.
+3. consultar o repositório da WB registrado no PROJECT_ENTRYPOINT.md;
+4. procurar primeiro em workflows/;
+5. procurar depois em skills/, templates/ e checklists/, quando existirem;
+6. discutir com o operador humano qual regra deve virar fonte de verdade;
+7. registrar a decisão aprovada no PROJECT_WORKFLOW.md;
+8. seguir o novo caminho apenas após aprovação.
 ```
 
 A IA não deve inventar continuidade quando a cobertura local acabar.
 
-## 13. Encaminhamento após bootstrap
+## 15. Encaminhamento após bootstrap
 
-Ao concluir o bootstrap e criar o contexto mínimo inicial, a IA deve encaminhar o fluxo para a classificação do projeto.
-
-Próximo arquivo obrigatório na WB:
+Ao concluir o bootstrap e criar o contexto mínimo inicial, a IA deve transferir o fluxo para:
 
 ```text
-workflows/project-classification/ENTRYPOINT.md
+ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md
 ```
 
-A IA deve então:
+O PROJECT_ENTRYPOINT deve então encaminhar a IA para:
 
 ```text
-1. ler o PROJECT_ENTRYPOINT.md do projeto alvo;
-2. ler o PROJECT_WORKFLOW.md do projeto alvo;
-3. ler o CURRENT_STAGE.md do projeto alvo;
-4. ler workflows/project-classification/ENTRYPOINT.md da WB;
-5. classificar complexidade, tecnologias, plataformas e agente implementador;
-6. propor o próximo caminho da biblioteca WB;
-7. solicitar confirmação humana;
-8. registrar a ramificação escolhida no PROJECT_WORKFLOW.md do projeto alvo.
+ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
+ProjetoAlvo/.workbench/CURRENT_STAGE.md
+AI_WORKBENCH/workflows/project-classification/ENTRYPOINT.md
 ```
 
-## 14. Fluxo universal
+A classificação deve definir:
+
+```text
+- complexidade;
+- tecnologias;
+- plataformas;
+- agente implementador;
+- workflow recomendado;
+- próxima ramificação da WB.
+```
+
+## 16. Fluxo universal
 
 ```text
 Ideia inicial
@@ -304,7 +379,11 @@ Registro do contexto mínimo inicial
 ↓
 Bootstrap concluído
 ↓
-Leitura do contexto local do projeto
+Transferência para PROJECT_ENTRYPOINT.md do projeto alvo
+↓
+Leitura do PROJECT_WORKFLOW.md
+↓
+Leitura do CURRENT_STAGE.md
 ↓
 Classificação do projeto via workflows/project-classification/
 ↓
@@ -312,22 +391,16 @@ Escolha da ramificação de workflow
 ↓
 Registro supervisionado da ramificação no projeto alvo
 ↓
-Entrevista inicial direcionada
+Uso do PROJECT_WORKFLOW como fonte de verdade local
 ↓
-Levantamento de requisitos
-↓
-Definição arquitetural proporcional
-↓
-Implementação controlada
-↓
-Validação
+Consulta à WB apenas quando faltar cobertura local
 ↓
 Governança supervisionada
 ↓
 Consolidação
 ```
 
-## 15. Próximo passo após leitura
+## 17. Próximo passo após leitura
 
 Após ler este arquivo, a IA deve:
 
@@ -338,6 +411,5 @@ Após ler este arquivo, a IA deve:
 4. criar automaticamente a estrutura `.workbench`, quando permitido;
 5. registrar contexto mínimo inicial;
 6. concluir o bootstrap;
-7. ler o contexto local do projeto;
-8. encaminhar o fluxo para workflows/project-classification/ENTRYPOINT.md.
+7. transferir o fluxo para ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md.
 ```
