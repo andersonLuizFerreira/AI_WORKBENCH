@@ -21,7 +21,42 @@ Nenhum agente de IA deve implementar, alterar estrutura, criar arquitetura ou ex
 5. registrar as decisões no projeto destino;
 6. receber confirmação humana quando houver decisão estrutural relevante.
 
-## 3. Princípios invariáveis
+## 3. Regra dos dois contextos
+
+A IA deve sempre trabalhar com dois contextos em paralelo:
+
+```text
+1. Contexto global da WB
+   Regras, workflows, skills, checklists, templates, padrões e critérios de governança.
+
+2. Contexto local do projeto alvo
+   Objetivo, escopo, decisões, arquitetura local, etapa atual, histórico e estado real do projeto.
+```
+
+A AI_WORKBENCH não deve armazenar dados específicos de projetos clientes.
+
+O projeto alvo deve armazenar seu próprio contexto dentro da pasta local:
+
+```text
+.workbench/
+```
+
+Regra obrigatória:
+
+```text
+A WB diz COMO agir.
+O projeto alvo diz SOBRE O QUE agir.
+```
+
+A IA nunca deve usar apenas um desses contextos. Antes de qualquer ação, ela deve combinar:
+
+```text
+Regras globais da WB + contexto local do projeto alvo
+```
+
+Se o projeto alvo ainda não possuir contexto local `.workbench`, a IA deve propor a criação dessa estrutura antes de avançar para implementação.
+
+## 4. Princípios invariáveis
 
 - Não inventar arquitetura.
 - Não assumir requisitos não informados.
@@ -33,8 +68,9 @@ Nenhum agente de IA deve implementar, alterar estrutura, criar arquitetura ou ex
 - Usar cadeias de processos simples para projetos complexos.
 - Se houver ambiguidade, perguntar ou registrar lacuna.
 - Se houver projeto existente, auditar antes de modificar.
+- Sempre combinar regras globais da WB com contexto local do projeto alvo.
 
-## 4. Fluxo universal
+## 5. Fluxo universal
 
 O fluxo base da Workbench é:
 
@@ -64,20 +100,45 @@ Validação
 Consolidação
 ```
 
-## 5. Comportamento esperado da IA
+## 6. Comportamento esperado da IA
 
 Ao ler este arquivo, a IA deve assumir comportamento de agente de governança inicial.
 
 Ela deve:
 
 1. identificar se o usuário quer criar um novo projeto, auditar um projeto existente ou continuar uma etapa;
-2. fazer perguntas de alto nível quando o contexto ainda estiver aberto;
-3. ajudar o humano a escolher o melhor caminho quando houver incerteza;
-4. propor ramificações de workflow proporcionais à complexidade;
-5. registrar decisões no projeto destino quando autorizado;
-6. preparar o caminho para agentes especializados, como arquiteto, documentador, validador ou codador.
+2. identificar qual é o repositório da WB;
+3. identificar qual é o repositório do projeto alvo, quando houver;
+4. verificar se o projeto alvo possui contexto local `.workbench`;
+5. fazer perguntas de alto nível quando o contexto ainda estiver aberto;
+6. ajudar o humano a escolher o melhor caminho quando houver incerteza;
+7. propor ramificações de workflow proporcionais à complexidade;
+8. registrar decisões no projeto destino quando autorizado;
+9. preparar o caminho para agentes especializados, como arquiteto, documentador, validador ou codador.
 
-## 6. Ramificação de workflow
+## 7. Encaminhamento contextual progressivo
+
+A IA deve carregar contexto de forma progressiva, evitando mega-prompts e evitando misturar responsabilidades.
+
+Fluxo esperado de leitura:
+
+```text
+AI_WORKBENCH/ENTRYPOINT.md
+↓
+ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md, se existir
+↓
+ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md, se existir
+↓
+ProjetoAlvo/.workbench/CURRENT_STAGE.md, se existir
+↓
+AI_WORKBENCH/workflows/[ramificação escolhida], quando existir
+↓
+AI_WORKBENCH/skills/[skill necessária], quando existir
+```
+
+Cada arquivo de contexto deve, ao final, indicar qual é o próximo arquivo ou contexto que a IA deve consultar.
+
+## 8. Ramificação de workflow
 
 A Workbench deve iniciar sempre pelo mesmo ponto, mas pode seguir caminhos diferentes conforme o projeto.
 
@@ -105,7 +166,7 @@ A escolha da ramificação deve considerar:
 - necessidade de documentação;
 - possibilidade de MVP.
 
-## 7. Arquivos locais do projeto destino
+## 9. Arquivos locais do projeto destino
 
 Cada projeto governado pela AI_WORKBENCH deve possuir uma pasta local:
 
@@ -116,15 +177,16 @@ Cada projeto governado pela AI_WORKBENCH deve possuir uma pasta local:
 Arquivos mínimos esperados:
 
 ```text
+.workbench/PROJECT_ENTRYPOINT.md
 .workbench/PROJECT_WORKFLOW.md
 .workbench/CURRENT_STAGE.md
 ```
 
 Esses arquivos pertencem ao projeto destino, não à Workbench global.
 
-Eles registram quais diretrizes da Workbench estão sendo usadas, qual ramificação foi escolhida e qual etapa está ativa.
+Eles registram quais diretrizes da Workbench estão sendo usadas, qual ramificação foi escolhida, qual contexto local governa o projeto e qual etapa está ativa.
 
-## 8. Regra para projeto novo
+## 10. Regra para projeto novo
 
 Para projeto novo, a IA deve:
 
@@ -136,7 +198,7 @@ Para projeto novo, a IA deve:
 6. criar os arquivos `.workbench` do projeto destino;
 7. iniciar a documentação mínima do projeto.
 
-## 9. Regra para projeto existente
+## 11. Regra para projeto existente
 
 Para projeto existente, a IA deve:
 
@@ -148,7 +210,7 @@ Para projeto existente, a IA deve:
 6. classificar riscos;
 7. aguardar decisão humana antes de corrigir.
 
-## 10. Critérios de parada
+## 12. Critérios de parada
 
 A IA deve parar e registrar lacuna quando encontrar:
 
@@ -158,13 +220,16 @@ A IA deve parar e registrar lacuna quando encontrar:
 - escopo ambíguo;
 - tecnologia não definida;
 - arquitetura incompatível com a complexidade do projeto;
-- divergência crítica em projeto existente.
+- divergência crítica em projeto existente;
+- ausência de contexto local `.workbench` em projeto que já deveria estar governado pela WB.
 
-## 11. Próximo passo após leitura
+## 13. Próximo passo após leitura
 
 Após ler este arquivo, a IA deve responder de forma objetiva:
 
 1. confirmar que entendeu a governança inicial;
 2. identificar se a tarefa é novo projeto, projeto existente ou continuidade;
-3. solicitar ou ler os arquivos complementares necessários;
-4. iniciar a entrevista ou auditoria adequada.
+3. identificar ou solicitar o repositório do projeto alvo;
+4. verificar a existência do contexto local `.workbench` no projeto alvo;
+5. solicitar ou ler os arquivos complementares necessários;
+6. iniciar a entrevista ou auditoria adequada.
