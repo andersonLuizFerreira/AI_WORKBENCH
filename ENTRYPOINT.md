@@ -48,15 +48,85 @@ A WB diz COMO agir.
 O projeto alvo diz SOBRE O QUE agir.
 ```
 
-A IA nunca deve usar apenas um desses contextos. Antes de qualquer ação, ela deve combinar:
+## 4. Regra de separação entre bootstrap e entrevista
+
+O bootloader da WB NÃO deve misturar:
 
 ```text
-Regras globais da WB + contexto local do projeto alvo
+- criação estrutural do projeto
+com
+- levantamento de requisitos funcionais.
 ```
 
-Se o projeto alvo ainda não possuir contexto local `.workbench`, a IA deve propor a criação dessa estrutura antes de avançar para implementação.
+A criação do repositório, da pasta local e da estrutura `.workbench` deve acontecer antes da entrevista detalhada do projeto.
 
-## 4. Regra de governança supervisionada da `.workbench`
+Durante o bootstrap, a IA NÃO deve exigir informações como:
+
+```text
+- funcionalidades detalhadas;
+- arquitetura do sistema;
+- plataforma final;
+- regras de negócio;
+- persistência;
+- público alvo;
+- complexidade funcional;
+- requisitos avançados.
+```
+
+Essas informações pertencem à etapa posterior:
+
+```text
+Entrevista inicial do projeto
+```
+
+## 5. Informações mínimas obrigatórias para bootstrap
+
+Para executar o bootstrap inicial do projeto, a IA deve solicitar apenas:
+
+```text
+1. Nome do projeto
+2. URL do repositório remoto
+3. Caminho local da pasta do projeto
+4. Branch principal, se conhecida
+```
+
+Com essas informações, a IA já deve ser capaz de:
+
+```text
+- validar o repositório;
+- validar Git local;
+- validar sincronização;
+- criar a estrutura `.workbench`;
+- registrar contexto mínimo inicial.
+```
+
+## 6. Contexto mínimo inicial do projeto
+
+Após o bootstrap, mas antes da entrevista funcional, os arquivos `.workbench` devem conter apenas contexto mínimo.
+
+Exemplo esperado:
+
+```text
+PROJECT_ENTRYPOINT.md
+- nome do projeto
+- repositório
+- branch
+- caminho local
+- status: aguardando entrevista inicial
+
+PROJECT_WORKFLOW.md
+- workflow: não definido
+- ramificação: pendente
+- status: aguardando classificação
+
+CURRENT_STAGE.md
+- etapa atual: bootstrap concluído
+- próxima etapa: entrevista inicial
+```
+
+A IA não deve inventar requisitos funcionais antes da entrevista do projeto.
+
+## 7. Regra de governança supervisionada da `.workbench`
 
 Os arquivos da pasta `.workbench` são arquivos oficiais de governança do projeto.
 
@@ -91,43 +161,7 @@ Aprovação humana
 Atualização oficial da `.workbench`
 ```
 
-Regra obrigatória:
-
-```text
-Toda alteração estrutural na `.workbench` deve ser:
-- explícita;
-- auditável;
-- supervisionada;
-- confirmada pelo supervisor humano.
-```
-
-Agentes implementadores podem:
-
-```text
-- sugerir alterações;
-- gerar relatórios;
-- propor atualização de etapa;
-- propor atualização de CURRENT_STAGE.md;
-- propor atualização de workflow.
-```
-
-Mas não devem:
-
-```text
-- consolidar silenciosamente governança;
-- reescrever histórico do projeto;
-- alterar workflow ativo sem autorização;
-- alterar escopo oficialmente sem aprovação.
-```
-
-O objetivo desta regra é evitar:
-
-- auto-governança silenciosa da IA;
-- divergência entre implementação e estado oficial;
-- perda de rastreabilidade;
-- reescrita não supervisionada do histórico do projeto.
-
-## 5. Regra de bootloader para repositório alvo
+## 8. Regra de bootloader para repositório alvo
 
 Antes de iniciar entrevista técnica, arquitetura, documentação, workflow específico ou implementação, a IA deve garantir que existe um repositório alvo para o projeto.
 
@@ -141,34 +175,7 @@ A IA deve verificar:
 4. se a pasta local está acessível ao usuário;
 5. se a pasta local poderá receber a estrutura `.workbench`.
 
-A IA deve apresentar ao usuário três opções iniciais:
-
-```text
-1. Ainda não criei o repositório do projeto.
-2. Já criei o repositório, mas ainda não clonei na minha máquina.
-3. Já criei o repositório e já tenho uma pasta local sincronizada.
-```
-
-Se o usuário ainda não criou o repositório, a IA deve orientar a criação do repositório antes de avançar.
-
-Se o usuário criou o repositório, mas ainda não clonou, a IA deve oferecer dois caminhos:
-
-```text
-Caminho A — comandos para CMD/PowerShell/Git Bash.
-Caminho B — orientação passo a passo sem comandos.
-```
-
-Se o usuário já possui pasta local sincronizada, a IA deve solicitar:
-
-```text
-- URL do repositório remoto;
-- caminho local da pasta do projeto;
-- branch principal usada pelo projeto, se conhecida.
-```
-
-Enquanto o repositório alvo e a pasta local sincronizada não forem confirmados, a IA não deve avançar para requisitos, arquitetura ou implementação.
-
-## 6. Regra de acesso ao repositório alvo
+## 9. Regra de acesso ao repositório alvo
 
 Após receber as informações do repositório alvo, a IA deve tratar todos os bloqueios de acesso antes de continuar.
 
@@ -178,17 +185,14 @@ A IA deve verificar ou orientar o usuário a verificar:
 2. se a URL informada está correta;
 3. se o repositório é público ou privado;
 4. se a IA/ferramenta em uso possui permissão de leitura;
-5. se a IA/ferramenta em uso possui permissão de escrita, quando escrita for necessária;
+5. se a IA/ferramenta em uso possui permissão de escrita;
 6. se o usuário está autenticado no Git local;
-7. se `git clone`, `git pull`, `git status` e `git push` funcionam no ambiente local;
-8. se a branch principal está correta;
-9. se não existem conflitos ou alterações locais não salvas.
+7. se `git clone`, `git pull`, `git status` e `git push` funcionam;
+8. se a branch principal está correta.
 
-Se houver bloqueio de acesso, a IA deve parar o fluxo de projeto e orientar a correção antes de avançar.
+## 10. Criação inicial da pasta .workbench no projeto alvo
 
-## 7. Criação inicial da pasta .workbench no projeto alvo
-
-Uma vez confirmado o acesso ao repositório alvo e à pasta local sincronizada, a IA deve informar que criará ou orientará a criação da pasta local de governança do projeto:
+Uma vez confirmado o acesso ao repositório alvo e à pasta local sincronizada, a IA deve criar automaticamente:
 
 ```text
 .workbench/
@@ -202,48 +206,16 @@ Arquivos iniciais obrigatórios:
 .workbench/CURRENT_STAGE.md
 ```
 
-Regra obrigatória:
+Se a IA possuir permissão de escrita, ela própria deve:
 
 ```text
-Se a IA possuir permissão de escrita no repositório alvo, ela própria deve criar:
-
-- a pasta `.workbench`;
-- os arquivos iniciais;
-- o conteúdo inicial desses arquivos;
-- os commits iniciais relacionados à governança.
+- criar a pasta `.workbench`;
+- criar os arquivos iniciais;
+- preencher conteúdo mínimo inicial;
+- registrar commits iniciais de governança.
 ```
 
-A IA não deve solicitar ao usuário que crie manualmente os arquivos `.workbench` quando a própria IA puder fazê-lo.
-
-Somente quando a IA não possuir permissão de escrita ela poderá:
-
-```text
-- gerar comandos;
-- orientar criação manual;
-- solicitar intervenção humana.
-```
-
-## 8. Princípios invariáveis
-
-- Não inventar arquitetura.
-- Não assumir requisitos não informados.
-- Não expandir escopo sem confirmação.
-- Não criar complexidade desnecessária.
-- Separar decisão de execução.
-- Registrar decisões importantes.
-- Preferir processos simples para projetos simples.
-- Usar cadeias de processos simples para projetos complexos.
-- Se houver ambiguidade, perguntar ou registrar lacuna.
-- Se houver projeto existente, auditar antes de modificar.
-- Sempre combinar regras globais da WB com contexto local do projeto alvo.
-- Garantir repositório alvo e pasta local sincronizada antes de iniciar workflows de projeto novo.
-- Resolver bloqueios de acesso ao repositório alvo antes de criar contexto local.
-- Criar automaticamente a estrutura `.workbench` quando houver permissão de escrita.
-- Nunca alterar silenciosamente arquivos oficiais de governança.
-
-## 9. Fluxo universal
-
-O fluxo base da Workbench é:
+## 11. Fluxo universal
 
 ```text
 Ideia inicial
@@ -256,11 +228,15 @@ Verificação ou criação do repositório alvo
 ↓
 Confirmação de pasta local sincronizada com Git
 ↓
-Tratamento de bloqueios de acesso ao repositório alvo
+Tratamento de bloqueios de acesso
 ↓
-Criação automática da estrutura `.workbench`, quando permitido
+Criação automática da `.workbench`
 ↓
-Entrevista com humano
+Registro do contexto mínimo inicial
+↓
+Bootstrap concluído
+↓
+Entrevista inicial do projeto
 ↓
 Classificação do projeto
 ↓
@@ -268,39 +244,27 @@ Escolha da ramificação de workflow
 ↓
 Levantamento de requisitos
 ↓
-Definição arquitetural proporcional à complexidade
-↓
-Criação/atualização dos arquivos locais .workbench do projeto
-↓
-Geração de documentação e checklists
-↓
-Preparação para agente codador
+Definição arquitetural
 ↓
 Implementação controlada
 ↓
 Validação
 ↓
-Relatório explícito da etapa
-↓
-Sugestão supervisionada de atualização da governança
-↓
-Aprovação humana
-↓
-Atualização oficial da `.workbench`
+Governança supervisionada
 ↓
 Consolidação
 ```
 
-## 10. Próximo passo após leitura
+## 12. Próximo passo após leitura
 
-Após ler este arquivo, a IA deve responder de forma objetiva:
+Após ler este arquivo, a IA deve:
 
-1. confirmar que entendeu a governança inicial;
-2. identificar se a tarefa é novo projeto, projeto existente ou continuidade;
-3. se for projeto novo, perguntar imediatamente sobre o repositório alvo;
-4. se for projeto existente, solicitar ou identificar o repositório alvo e o caminho local;
-5. tratar bloqueios de acesso ao repositório alvo;
-6. verificar a existência do contexto local `.workbench` no projeto alvo;
-7. se o contexto local não existir e houver permissão de escrita, criar automaticamente a estrutura `.workbench`;
-8. solicitar ou ler os arquivos complementares necessários;
-9. iniciar a entrevista ou auditoria adequada somente após o bootloader mínimo estar satisfeito.
+```text
+1. identificar o tipo de operação;
+2. solicitar apenas os dados mínimos do bootstrap;
+3. validar repositório e Git local;
+4. criar automaticamente a estrutura `.workbench`, quando permitido;
+5. registrar contexto mínimo inicial;
+6. concluir o bootstrap;
+7. somente depois iniciar entrevista funcional do projeto.
+```
