@@ -16,7 +16,8 @@ A IA deve decidir o caminho com base em:
 - plataformas usadas;
 - agente ou ferramenta que fará a implementação;
 - nível de documentação necessário;
-- estrutura mínima de pastas recomendada.
+- estrutura mínima de pastas recomendada;
+- autonomia local desejada para o projeto.
 
 ## 2. Regra central
 
@@ -33,9 +34,10 @@ Não aplicar estrutura simples em projeto que exige organização maior.
 
 ```text
 1. AI_WORKBENCH/ENTRYPOINT.md
-2. ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md
-3. ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
-4. ProjetoAlvo/.workbench/CURRENT_STAGE.md
+2. AI_WORKBENCH/skills/governance-rules/SKILL.md
+3. ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md
+4. ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
+5. ProjetoAlvo/.workbench/CURRENT_STAGE.md
 ```
 
 Se algum desses arquivos estiver ausente, a IA deve retornar ao bootstrap.
@@ -147,7 +149,31 @@ A IA deve registrar quem provavelmente implementará o projeto:
 
 Se estiver indefinido, registrar como pendente.
 
-## 9. Documentação proporcional
+## 9. Definição da autonomia local do projeto
+
+Durante a classificação, a IA deve solicitar o nível de autonomia local desejado para o projeto.
+
+A autonomia local do projeto NÃO deve ser confundida com a autonomia de bootstrap da WB.
+
+A autonomia local deve ser registrada posteriormente no contexto local do projeto.
+
+Níveis possíveis:
+
+```text
+- baixa
+- media
+- alta
+```
+
+A IA deve também registrar:
+
+```text
+- justificativa da autonomia;
+- limites da autonomia;
+- decisões que exigem aprovação humana.
+```
+
+## 10. Documentação proporcional
 
 A documentação deve acompanhar o tamanho do projeto.
 
@@ -172,7 +198,7 @@ Projeto complexo:
 - validações e rastreabilidade
 ```
 
-## 10. Estrutura de pastas proporcional
+## 11. Estrutura de pastas proporcional
 
 Regra:
 
@@ -183,7 +209,7 @@ Escalar somente quando a complexidade justificar.
 
 A IA não deve criar estrutura complexa em projeto simples.
 
-## 11. Roteamento inicial
+## 12. Roteamento inicial
 
 Após a classificação, a IA deve propor um caminho da biblioteca WB.
 
@@ -218,7 +244,7 @@ workflows/complex-projects/embedded/
 
 Se o caminho ainda não existir, a IA deve informar que o workflow especializado ainda está em construção e propor sua criação incremental.
 
-## 12. Saída obrigatória
+## 13. Saída obrigatória
 
 Ao final, a IA deve apresentar:
 
@@ -231,11 +257,13 @@ Ao final, a IA deve apresentar:
 - nível de documentação recomendado;
 - estrutura de pastas recomendada;
 - workflow recomendado;
+- autonomia local desejada;
+- limites da autonomia local;
 - lacunas encontradas;
 - decisão que precisa de confirmação humana.
 ```
 
-## 13. Atualização supervisionada do projeto alvo
+## 14. Atualização supervisionada do projeto alvo
 
 Após confirmação humana, a IA deve sugerir atualização de:
 
@@ -246,7 +274,7 @@ Após confirmação humana, a IA deve sugerir atualização de:
 
 Esses arquivos são governança oficial, portanto a atualização deve ser explícita e supervisionada.
 
-## 14. Próximo contexto
+## 15. Próximo contexto
 
 Após confirmação da classificação, a IA deve seguir para o workflow indicado.
 
