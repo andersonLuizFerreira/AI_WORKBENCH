@@ -2,7 +2,7 @@
 
 Esta skill define regras operacionais transversais da AI_WORKBENCH.
 
-Ela deve ser usada por agentes de IA sempre que houver classificação de projeto, definição de workflow, implementação controlada, auditoria, documentação ou atualização da `.workbench` local do projeto alvo.
+Ela deve ser usada por agentes de IA sempre que houver bootstrap, classificação de projeto, definição de workflow, implementação controlada, auditoria, documentação ou atualização da `.workbench` local do projeto alvo.
 
 ## 1. Separação entre regra, heurística e exceção
 
@@ -93,12 +93,57 @@ Ao parar, a IA deve:
 5. aguardar confirmação humana antes de continuar.
 ```
 
-## 3. Nível de autonomia da IA
+## 3. Autonomia da IA
+
+A autonomia da IA possui dois níveis distintos:
+
+```text
+1. Autonomia de bootstrap da WB
+2. Autonomia local do projeto alvo
+```
+
+Essas autonomias não devem ser confundidas.
+
+## 4. Autonomia de bootstrap da WB
 
 REGRA:
-A WB não define um nível de autonomia global fixo para todos os projetos.
+Durante o bootstrap, a autonomia da IA é sempre baixa e supervisionada.
 
-O nível de autonomia deve ser solicitado durante a classificação ou entrevista inicial e salvo no contexto local do projeto alvo.
+MOTIVO:
+Antes da criação ou leitura válida da `.workbench` local, ainda não existe fonte de verdade local do projeto.
+
+APLICA-SE A:
+
+```text
+- criação ou validação de repositório remoto;
+- criação ou validação de pasta local;
+- sincronização Git inicial;
+- criação da pasta `.workbench`;
+- criação dos arquivos locais obrigatórios;
+- preenchimento de contexto mínimo inicial;
+- commits iniciais de governança.
+```
+
+Durante o bootstrap, a IA pode apenas executar a fundação estrutural mínima aprovada pela WB.
+
+Durante o bootstrap, a IA NÃO deve:
+
+```text
+- definir arquitetura do produto;
+- escolher tecnologia por conta própria;
+- levantar requisitos funcionais detalhados;
+- definir regras de negócio;
+- implementar código de produto;
+- criar documentação funcional inventada;
+- registrar decisões locais não confirmadas.
+```
+
+## 5. Autonomia local do projeto alvo
+
+REGRA:
+A WB não define um nível de autonomia local fixo para todos os projetos.
+
+O nível de autonomia local deve ser solicitado durante a classificação ou entrevista inicial e salvo no contexto local do projeto alvo.
 
 Local recomendado:
 
@@ -112,7 +157,9 @@ Opcionalmente, projetos mais rigorosos podem registrar detalhes adicionais em:
 ProjetoAlvo/.workbench/AI_AUTONOMY.md
 ```
 
-## 4. Níveis recomendados de autonomia
+A autonomia local só passa a valer depois de registrada e aprovada no contexto local do projeto.
+
+## 6. Níveis recomendados de autonomia local
 
 ### AUTONOMIA BAIXA
 
@@ -155,7 +202,7 @@ Usar quando:
 - o operador humano deseja velocidade.
 ```
 
-## 5. Registro mínimo da autonomia no projeto alvo
+## 7. Registro mínimo da autonomia local no projeto alvo
 
 O registro local deve conter no mínimo:
 
@@ -167,7 +214,7 @@ AI_AUTONOMY_LIMITS: <limites explícitos>
 HUMAN_APPROVAL_REQUIRED_FOR: <decisões que exigem aprovação>
 ```
 
-## 6. Contrato executável de workflow
+## 8. Contrato executável de workflow
 
 Todo workflow operacional da WB deve evoluir para o seguinte contrato mínimo:
 
@@ -185,7 +232,7 @@ PRÓXIMO CONTEXTO
 
 Workflows antigos ou narrativos devem ser preservados, mas novos workflows devem seguir esse formato sempre que possível.
 
-## 7. Regra de segurança contra alucinação operacional
+## 9. Regra de segurança contra alucinação operacional
 
 REGRA:
 A IA não deve transformar ausência de regra em permissão.
