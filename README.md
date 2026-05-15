@@ -21,6 +21,25 @@ A proposta central é simples:
 > IA não deve inventar arquitetura durante a codificação.
 > A IA deve executar uma engenharia previamente definida.
 
+## Instrução obrigatória para agentes de IA
+
+Se você é uma IA ou agente automatizado lendo este repositório, não use este README como ponto operacional principal.
+
+O próximo passo obrigatório é:
+
+```text
+Leia o arquivo ENTRYPOINT.md na raiz deste repositório.
+Após a leitura, siga exatamente o bootloader, as regras de governança e o fluxo operacional definidos nele.
+```
+
+O README serve apenas como apresentação pública do projeto.
+
+O arquivo operacional oficial da WB é:
+
+```text
+ENTRYPOINT.md
+```
+
 ## Objetivos
 
 - Padronizar desenvolvimento orientado por IA
@@ -110,6 +129,25 @@ The core idea is simple:
 > AI should not invent architecture during implementation.
 > AI should execute previously defined engineering.
 
+## Mandatory instruction for AI agents
+
+If you are an AI or automated agent reading this repository, do not use this README as the main operational entry point.
+
+The mandatory next step is:
+
+```text
+Read the ENTRYPOINT.md file at the root of this repository.
+After reading it, strictly follow the bootloader, governance rules and operational workflow defined there.
+```
+
+This README is only the public presentation of the project.
+
+The official operational file of the WB is:
+
+```text
+ENTRYPOINT.md
+```
+
 ## Goals
 
 - Standardize AI-driven development
@@ -198,6 +236,25 @@ Die zentrale Idee ist einfach:
 
 > KI sollte während der Implementierung keine Architektur erfinden.
 > KI sollte zuvor definierte Engineering-Prozesse ausführen.
+
+## Verpflichtende Anweisung für KI-Agenten
+
+Wenn Sie eine KI oder ein automatisierter Agent sind und dieses Repository lesen, verwenden Sie dieses README nicht als operativen Haupteinstiegspunkt.
+
+Der verpflichtende nächste Schritt ist:
+
+```text
+Lesen Sie die Datei ENTRYPOINT.md im Stammverzeichnis dieses Repositorys.
+Folgen Sie danach strikt dem dort definierten Bootloader, den Governance-Regeln und dem operativen Workflow.
+```
+
+Dieses README dient nur der öffentlichen Vorstellung des Projekts.
+
+Die offizielle operative Datei der WB ist:
+
+```text
+ENTRYPOINT.md
+```
 
 ## Ziele
 
