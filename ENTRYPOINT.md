@@ -165,9 +165,34 @@ CURRENT_STAGE.md
 Registra a etapa atual, objetivo imediato, escopo da etapa, fora de escopo, entregáveis e próximo passo.
 ```
 
-A IA deve avisar claramente ao usuário antes de criar esses arquivos.
+Regra obrigatória:
 
-Se a IA não possuir permissão de escrita, deve gerar os comandos ou orientar o usuário a criar os arquivos manualmente.
+```text
+Se a IA possuir permissão de escrita no repositório alvo, ela própria deve criar:
+
+- a pasta `.workbench`;
+- os arquivos iniciais;
+- o conteúdo inicial desses arquivos;
+- os commits iniciais relacionados à governança.
+```
+
+A IA não deve solicitar ao usuário que crie manualmente os arquivos `.workbench` quando a própria IA puder fazê-lo.
+
+Isso evita:
+
+- erros de nomenclatura;
+- erros de caminho;
+- divergência estrutural;
+- arquivos incompletos;
+- inconsistência entre projetos.
+
+Somente quando a IA não possuir permissão de escrita ela poderá:
+
+```text
+- gerar comandos;
+- orientar criação manual;
+- solicitar intervenção humana.
+```
 
 ## 7. Princípios invariáveis
 
@@ -184,6 +209,7 @@ Se a IA não possuir permissão de escrita, deve gerar os comandos ou orientar o
 - Sempre combinar regras globais da WB com contexto local do projeto alvo.
 - Garantir repositório alvo e pasta local sincronizada antes de iniciar workflows de projeto novo.
 - Resolver bloqueios de acesso ao repositório alvo antes de criar contexto local.
+- Criar automaticamente a estrutura `.workbench` quando houver permissão de escrita.
 
 ## 8. Fluxo universal
 
@@ -202,7 +228,7 @@ Confirmação de pasta local sincronizada com Git
 ↓
 Tratamento de bloqueios de acesso ao repositório alvo
 ↓
-Criação ou orientação de criação da pasta .workbench
+Criação automática da estrutura `.workbench`, quando permitido
 ↓
 Entrevista com humano
 ↓
@@ -239,7 +265,7 @@ Ela deve:
 4. garantir que projeto novo tenha repositório alvo e pasta local sincronizada antes de avançar;
 5. tratar bloqueios de acesso ao repositório alvo;
 6. verificar se o projeto alvo possui contexto local `.workbench`;
-7. informar a criação ou orientação de criação dos arquivos iniciais `.workbench`;
+7. criar automaticamente os arquivos iniciais `.workbench` quando houver permissão de escrita;
 8. fazer perguntas de alto nível quando o contexto ainda estiver aberto;
 9. ajudar o humano a escolher o melhor caminho quando houver incerteza;
 10. propor ramificações de workflow proporcionais à complexidade;
@@ -325,7 +351,7 @@ Para projeto novo, a IA deve:
 3. orientar criação/clonagem do repositório quando necessário;
 4. confirmar a existência de pasta local sincronizada com Git;
 5. tratar bloqueios de acesso ao repositório alvo;
-6. informar a criação ou orientação de criação da estrutura `.workbench`;
+6. criar automaticamente a estrutura `.workbench` quando houver permissão;
 7. conduzir entrevista inicial;
 8. classificar o tipo de projeto;
 9. propor uma ramificação de workflow;
@@ -375,6 +401,6 @@ Após ler este arquivo, a IA deve responder de forma objetiva:
 4. se for projeto existente, solicitar ou identificar o repositório alvo e o caminho local;
 5. tratar bloqueios de acesso ao repositório alvo;
 6. verificar a existência do contexto local `.workbench` no projeto alvo;
-7. se o contexto local não existir, informar a criação ou orientação de criação da pasta `.workbench` e dos arquivos iniciais;
+7. se o contexto local não existir e houver permissão de escrita, criar automaticamente a estrutura `.workbench`;
 8. solicitar ou ler os arquivos complementares necessários;
 9. iniciar a entrevista ou auditoria adequada somente após o bootloader mínimo estar satisfeito.
