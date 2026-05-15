@@ -48,6 +48,12 @@ A WB diz COMO agir.
 O projeto alvo diz SOBRE O QUE agir.
 ```
 
+A IA nunca deve usar apenas um desses contextos. Antes de qualquer ação, ela deve combinar:
+
+```text
+Regras globais da WB + contexto local do projeto alvo
+```
+
 ## 4. Regra de separação entre bootstrap e entrevista
 
 O bootloader da WB NÃO deve misturar:
@@ -215,7 +221,69 @@ Se a IA possuir permissão de escrita, ela própria deve:
 - registrar commits iniciais de governança.
 ```
 
-## 11. Fluxo universal
+## 11. Biblioteca de workflows da WB
+
+A WB deve possuir uma biblioteca de definições para diferentes tipos de projeto.
+
+Essas definições vivem dentro do repositório da WB, não dentro dos projetos clientes.
+
+Exemplos de caminhos futuros:
+
+```text
+workflows/project-classification/
+workflows/simple-projects/
+workflows/medium-projects/
+workflows/complex-projects/
+workflows/web-projects/
+workflows/api-projects/
+workflows/desktop-projects/
+workflows/embedded-projects/
+workflows/mobile-projects/
+```
+
+O projeto alvo deve armazenar apenas qual caminho da WB está sendo usado e quais decisões locais foram tomadas.
+
+## 12. Regra de cobertura do contexto local
+
+As regras do projeto alvo registradas em `.workbench` são verdadeiras enquanto estiverem dentro da cobertura daquele contexto.
+
+Se a IA encontrar uma situação não coberta pelo contexto local, ela deve:
+
+```text
+1. parar;
+2. registrar a lacuna;
+3. consultar a biblioteca de workflows da WB;
+4. orientar-se com o operador humano;
+5. escolher ou confirmar o próximo caminho;
+6. registrar a nova decisão no `.workbench` local, com aprovação explícita.
+```
+
+A IA não deve inventar continuidade quando a cobertura local acabar.
+
+## 13. Encaminhamento após bootstrap
+
+Ao concluir o bootstrap e criar o contexto mínimo inicial, a IA deve encaminhar o fluxo para a classificação do projeto.
+
+Próximo arquivo obrigatório na WB:
+
+```text
+workflows/project-classification/ENTRYPOINT.md
+```
+
+A IA deve então:
+
+```text
+1. ler o PROJECT_ENTRYPOINT.md do projeto alvo;
+2. ler o PROJECT_WORKFLOW.md do projeto alvo;
+3. ler o CURRENT_STAGE.md do projeto alvo;
+4. ler workflows/project-classification/ENTRYPOINT.md da WB;
+5. classificar complexidade, tecnologias, plataformas e agente implementador;
+6. propor o próximo caminho da biblioteca WB;
+7. solicitar confirmação humana;
+8. registrar a ramificação escolhida no PROJECT_WORKFLOW.md do projeto alvo.
+```
+
+## 14. Fluxo universal
 
 ```text
 Ideia inicial
@@ -236,15 +304,19 @@ Registro do contexto mínimo inicial
 ↓
 Bootstrap concluído
 ↓
-Entrevista inicial do projeto
+Leitura do contexto local do projeto
 ↓
-Classificação do projeto
+Classificação do projeto via workflows/project-classification/
 ↓
 Escolha da ramificação de workflow
 ↓
+Registro supervisionado da ramificação no projeto alvo
+↓
+Entrevista inicial direcionada
+↓
 Levantamento de requisitos
 ↓
-Definição arquitetural
+Definição arquitetural proporcional
 ↓
 Implementação controlada
 ↓
@@ -255,7 +327,7 @@ Governança supervisionada
 Consolidação
 ```
 
-## 12. Próximo passo após leitura
+## 15. Próximo passo após leitura
 
 Após ler este arquivo, a IA deve:
 
@@ -266,5 +338,6 @@ Após ler este arquivo, a IA deve:
 4. criar automaticamente a estrutura `.workbench`, quando permitido;
 5. registrar contexto mínimo inicial;
 6. concluir o bootstrap;
-7. somente depois iniciar entrevista funcional do projeto.
+7. ler o contexto local do projeto;
+8. encaminhar o fluxo para workflows/project-classification/ENTRYPOINT.md.
 ```
