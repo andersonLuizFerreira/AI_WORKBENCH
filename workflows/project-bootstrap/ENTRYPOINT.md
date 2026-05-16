@@ -99,7 +99,40 @@ Se alguma pasta obrigatória estiver ausente, a IA deve criá-la automaticamente
 LIMITAÇÃO:
 A estrutura universal não define ainda pastas específicas como src/, frontend/, backend/, firmware/, api/, database/ ou infra/. Essas estruturas dependem da classificação e da engenharia do projeto.
 
-## 6. ROTA 1 — Novo projeto sem repositório criado
+## 6. Estrutura mínima obrigatória de docs
+
+Durante o bootstrap, a IA deve criar e validar a estrutura mínima inicial de `docs/`.
+
+Pastas obrigatórias:
+
+```text
+docs/requirements/
+docs/architecture/
+docs/decisions/
+docs/validation/
+```
+
+REGRA:
+Toda engenharia, arquitetura, documentação técnica e futura codação devem partir da pasta `docs/`.
+
+VALIDAÇÃO:
+Antes de concluir o bootstrap, a IA deve verificar se todas as pastas obrigatórias de docs existem.
+
+IF_MISSING:
+Se alguma pasta obrigatória de docs estiver ausente, a IA deve criá-la automaticamente antes de continuar.
+
+LIMITAÇÃO:
+A estrutura de `docs/` nasce mínima.
+
+Subpastas especializadas adicionais só devem ser criadas após:
+
+```text
+- classificação do projeto;
+- engenharia do projeto;
+- necessidade real documentada.
+```
+
+## 7. ROTA 1 — Novo projeto sem repositório criado
 
 Quando o projeto ainda não possuir repositório remoto, a IA deve orientar o usuário a criar:
 
@@ -121,7 +154,7 @@ git push
 
 Se a IA/ferramenta não tiver acesso para criar o repositório remoto diretamente, deve orientar o usuário a criá-lo e solicitar a URL depois.
 
-## 7. ROTA 2 — Novo projeto com repositório já criado
+## 8. ROTA 2 — Novo projeto com repositório já criado
 
 Quando o repositório remoto já existir, a IA deve solicitar:
 
@@ -142,7 +175,7 @@ Depois deve validar ou orientar validação de:
 - branch principal correta.
 ```
 
-## 8. ROTA 3 — Projeto existente
+## 9. ROTA 3 — Projeto existente
 
 Quando o projeto já existir, a IA deve solicitar o caminho local do repositório do projeto.
 
@@ -154,7 +187,7 @@ ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
 ProjetoAlvo/.workbench/CURRENT_STAGE.md
 ```
 
-## 9. Projeto existente com `.workbench`
+## 10. Projeto existente com `.workbench`
 
 Se a pasta `.workbench` existir e os arquivos obrigatórios estiverem presentes, a IA deve:
 
@@ -170,7 +203,7 @@ O arquivo `CURRENT_STAGE.md` é obrigatório para continuidade.
 
 Se `CURRENT_STAGE.md` estiver ausente ou ambíguo, a IA deve parar e tratar como falha de contexto local.
 
-## 10. Projeto existente sem `.workbench`
+## 11. Projeto existente sem `.workbench`
 
 Se o projeto existir, mas não possuir `.workbench`, a IA deve perguntar:
 
@@ -192,7 +225,7 @@ Encaminhar para AI_WORKBENCH/workflows/project-adoption/ENTRYPOINT.md
 
 A IA não deve criar engenharia, documentação ou código antes de seguir a política de adoção.
 
-## 11. Criação da `.workbench` local
+## 12. Criação da `.workbench` local
 
 Quando a rota permitir criação inicial da `.workbench`, a IA deve criar no projeto alvo:
 
@@ -213,7 +246,7 @@ A IA deve:
 - impedir transferência de fluxo com arquivos incompletos.
 ```
 
-## 12. Conteúdo mínimo inicial
+## 13. Conteúdo mínimo inicial
 
 A `.workbench` inicial deve registrar apenas contexto mínimo:
 
@@ -231,7 +264,7 @@ A `.workbench` inicial deve registrar apenas contexto mínimo:
 
 A IA não deve inventar requisitos funcionais nessa etapa.
 
-## 13. Saída obrigatória do bootstrap
+## 14. Saída obrigatória do bootstrap
 
 Ao concluir o bootstrap, a IA deve apresentar:
 
@@ -241,12 +274,13 @@ Ao concluir o bootstrap, a IA deve apresentar:
 - pasta local validada ou pendente;
 - branch principal;
 - estrutura universal obrigatória criada e validada;
+- estrutura mínima de docs criada e validada;
 - arquivos `.workbench` criados ou localizados;
 - próximo arquivo a ser lido;
 - bloqueios existentes, se houver.
 ```
 
-## 14. Próximo contexto
+## 15. Próximo contexto
 
 Após bootstrap bem-sucedido, a IA deve transferir o fluxo para:
 
