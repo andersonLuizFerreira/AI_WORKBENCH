@@ -24,7 +24,45 @@ A IA deve ler:
 5. AI_WORKBENCH/templates/current-stage-template.md
 ```
 
-## 3. Primeira pergunta obrigatória
+## 3. Regra de fallback para contexto local ausente
+
+A IA deve sempre procurar primeiro:
+
+```text
+ProjetoAlvo/.workbench/PROJECT_ENTRYPOINT.md
+```
+
+Se o arquivo existir e estiver válido:
+
+```text
+Usar o contexto local do projeto.
+```
+
+Se o arquivo não existir:
+
+```text
+A IA deve obrigatoriamente retornar aos templates oficiais da WB.
+```
+
+Template obrigatório:
+
+```text
+AI_WORKBENCH/templates/project-entrypoint-template.md
+```
+
+A IA deve então:
+
+```text
+1. ler o template oficial;
+2. criar o PROJECT_ENTRYPOINT.md local;
+3. preencher os campos obrigatórios;
+4. validar o preenchimento;
+5. somente depois transferir o fluxo para o contexto local.
+```
+
+A IA não deve transferir o fluxo para um PROJECT_ENTRYPOINT.md vazio, incompleto ou contendo placeholders.
+
+## 4. Primeira pergunta obrigatória
 
 A IA deve perguntar ao usuário qual é a situação do projeto:
 
@@ -36,7 +74,7 @@ A IA deve perguntar ao usuário qual é a situação do projeto:
 
 A IA não deve iniciar entrevista funcional antes de resolver essa classificação inicial.
 
-## 4. ROTA 1 — Novo projeto sem repositório criado
+## 5. ROTA 1 — Novo projeto sem repositório criado
 
 Quando o projeto ainda não possuir repositório remoto, a IA deve orientar o usuário a criar:
 
@@ -58,7 +96,7 @@ git push
 
 Se a IA/ferramenta não tiver acesso para criar o repositório remoto diretamente, deve orientar o usuário a criá-lo e solicitar a URL depois.
 
-## 5. ROTA 2 — Novo projeto com repositório já criado
+## 6. ROTA 2 — Novo projeto com repositório já criado
 
 Quando o repositório remoto já existir, a IA deve solicitar:
 
@@ -79,7 +117,7 @@ Depois deve validar ou orientar validação de:
 - branch principal correta.
 ```
 
-## 6. ROTA 3 — Projeto existente
+## 7. ROTA 3 — Projeto existente
 
 Quando o projeto já existir, a IA deve solicitar o caminho local do repositório do projeto.
 
@@ -91,7 +129,7 @@ ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
 ProjetoAlvo/.workbench/CURRENT_STAGE.md
 ```
 
-## 7. Projeto existente com `.workbench`
+## 8. Projeto existente com `.workbench`
 
 Se a pasta `.workbench` existir e os arquivos obrigatórios estiverem presentes, a IA deve:
 
@@ -107,7 +145,7 @@ O arquivo `CURRENT_STAGE.md` é obrigatório para continuidade.
 
 Se `CURRENT_STAGE.md` estiver ausente ou ambíguo, a IA deve parar e tratar como falha de contexto local.
 
-## 8. Projeto existente sem `.workbench`
+## 9. Projeto existente sem `.workbench`
 
 Se o projeto existir, mas não possuir `.workbench`, a IA deve perguntar:
 
@@ -129,7 +167,7 @@ Encaminhar para AI_WORKBENCH/workflows/project-adoption/ENTRYPOINT.md
 
 A IA não deve criar engenharia, documentação ou código antes de seguir a política de adoção.
 
-## 9. Criação da `.workbench` local
+## 10. Criação da `.workbench` local
 
 Quando a rota permitir criação inicial da `.workbench`, a IA deve criar no projeto alvo:
 
@@ -141,7 +179,16 @@ Quando a rota permitir criação inicial da `.workbench`, a IA deve criar no pro
 
 Esses arquivos devem ser preenchidos a partir dos templates oficiais da WB.
 
-## 10. Conteúdo mínimo inicial
+A IA deve:
+
+```text
+- usar os templates apenas como molde;
+- substituir placeholders por dados reais;
+- validar os campos obrigatórios;
+- impedir transferência de fluxo com arquivos incompletos.
+```
+
+## 11. Conteúdo mínimo inicial
 
 A `.workbench` inicial deve registrar apenas contexto mínimo:
 
@@ -159,7 +206,7 @@ A `.workbench` inicial deve registrar apenas contexto mínimo:
 
 A IA não deve inventar requisitos funcionais nessa etapa.
 
-## 11. Saída obrigatória do bootstrap
+## 12. Saída obrigatória do bootstrap
 
 Ao concluir o bootstrap, a IA deve apresentar:
 
@@ -173,7 +220,7 @@ Ao concluir o bootstrap, a IA deve apresentar:
 - bloqueios existentes, se houver.
 ```
 
-## 12. Próximo contexto
+## 13. Próximo contexto
 
 Após bootstrap bem-sucedido, a IA deve transferir o fluxo para:
 
