@@ -24,7 +24,39 @@ A IA deve ler:
 5. AI_WORKBENCH/templates/current-stage-template.md
 ```
 
-## 3. Regra de fallback para contexto local ausente
+## 3. Regra de execução direta
+
+REGRA:
+Durante bootstrap e documentação inicial, se a IA possuir acesso de escrita ao repositório alvo, ela deve executar diretamente no GitHub/repositório.
+
+A IA NÃO deve gerar prompt para Codex nessa fase quando ela própria puder criar os arquivos necessários.
+
+Prompt para Codex só deve ser gerado quando:
+
+```text
+- a IA não possuir permissão de escrita;
+- a operação depender de execução local indisponível para a IA;
+- a etapa já estiver na fase de codação;
+- o usuário pedir explicitamente um prompt para Codex.
+```
+
+## 4. Sequência fixa da ETAPA inicial
+
+A IA NÃO deve perguntar "o que deseja construir primeiro" durante o bootstrap inicial.
+
+A sequência inicial é fixa:
+
+```text
+1. criar/validar a estrutura e arquivos da `.workbench` local;
+2. criar/validar as pastas globais obrigatórias;
+3. criar/validar a estrutura mínima de `docs/`;
+4. criar e popular a documentação mínima inicial;
+5. transferir o fluxo para engenharia do projeto.
+```
+
+A IA pode perguntar apenas dados faltantes necessários para executar essa sequência.
+
+## 5. Regra de fallback para contexto local ausente
 
 A IA deve sempre procurar primeiro:
 
@@ -62,7 +94,7 @@ A IA deve então:
 
 A IA não deve transferir o fluxo para um PROJECT_ENTRYPOINT.md vazio, incompleto ou contendo placeholders.
 
-## 4. Primeira pergunta obrigatória
+## 6. Primeira pergunta obrigatória
 
 A IA deve perguntar ao usuário qual é a situação do projeto:
 
@@ -74,7 +106,7 @@ A IA deve perguntar ao usuário qual é a situação do projeto:
 
 A IA não deve iniciar entrevista funcional antes de resolver essa classificação inicial.
 
-## 5. Estrutura universal obrigatória
+## 7. Estrutura universal obrigatória
 
 Durante o bootstrap, a IA deve criar e validar a estrutura universal mínima do projeto.
 
@@ -99,7 +131,7 @@ Se alguma pasta obrigatória estiver ausente, a IA deve criá-la automaticamente
 LIMITAÇÃO:
 A estrutura universal não define ainda pastas específicas como src/, frontend/, backend/, firmware/, api/, database/ ou infra/. Essas estruturas dependem da classificação e da engenharia do projeto.
 
-## 6. Estrutura mínima obrigatória de docs
+## 8. Estrutura mínima obrigatória de docs
 
 Durante o bootstrap, a IA deve criar e validar a estrutura mínima inicial de `docs/`.
 
@@ -132,7 +164,26 @@ Subpastas especializadas adicionais só devem ser criadas após:
 - necessidade real documentada.
 ```
 
-## 7. ROTA 1 — Novo projeto sem repositório criado
+## 9. Documentação mínima inicial
+
+Durante a ETAPA inicial, a IA deve criar documentação mínima inicial dentro das subpastas corretas de `docs/`.
+
+A IA NÃO deve criar arquivos soltos diretamente em `docs/` para substituir a estrutura mínima.
+
+Sugestão de arquivos iniciais:
+
+```text
+docs/requirements/initial-requirements.md
+docs/architecture/initial-architecture.md
+docs/decisions/initial-decisions.md
+docs/validation/initial-validation.md
+```
+
+A documentação inicial deve conter apenas o que já foi confirmado ou é estruturalmente necessário.
+
+A IA não deve inventar requisito funcional nem decisão arquitetural não aprovada.
+
+## 10. ROTA 1 — Novo projeto sem repositório criado
 
 Quando o projeto ainda não possuir repositório remoto, a IA deve orientar o usuário a criar:
 
@@ -154,7 +205,7 @@ git push
 
 Se a IA/ferramenta não tiver acesso para criar o repositório remoto diretamente, deve orientar o usuário a criá-lo e solicitar a URL depois.
 
-## 8. ROTA 2 — Novo projeto com repositório já criado
+## 11. ROTA 2 — Novo projeto com repositório já criado
 
 Quando o repositório remoto já existir, a IA deve solicitar:
 
@@ -175,7 +226,7 @@ Depois deve validar ou orientar validação de:
 - branch principal correta.
 ```
 
-## 9. ROTA 3 — Projeto existente
+## 12. ROTA 3 — Projeto existente
 
 Quando o projeto já existir, a IA deve solicitar o caminho local do repositório do projeto.
 
@@ -187,7 +238,7 @@ ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
 ProjetoAlvo/.workbench/CURRENT_STAGE.md
 ```
 
-## 10. Projeto existente com `.workbench`
+## 13. Projeto existente com `.workbench`
 
 Se a pasta `.workbench` existir e os arquivos obrigatórios estiverem presentes, a IA deve:
 
@@ -203,7 +254,7 @@ O arquivo `CURRENT_STAGE.md` é obrigatório para continuidade.
 
 Se `CURRENT_STAGE.md` estiver ausente ou ambíguo, a IA deve parar e tratar como falha de contexto local.
 
-## 11. Projeto existente sem `.workbench`
+## 14. Projeto existente sem `.workbench`
 
 Se o projeto existir, mas não possuir `.workbench`, a IA deve perguntar:
 
@@ -225,7 +276,7 @@ Encaminhar para AI_WORKBENCH/workflows/project-adoption/ENTRYPOINT.md
 
 A IA não deve criar engenharia, documentação ou código antes de seguir a política de adoção.
 
-## 12. Criação da `.workbench` local
+## 15. Criação da `.workbench` local
 
 Quando a rota permitir criação inicial da `.workbench`, a IA deve criar no projeto alvo:
 
@@ -246,7 +297,7 @@ A IA deve:
 - impedir transferência de fluxo com arquivos incompletos.
 ```
 
-## 13. Conteúdo mínimo inicial
+## 16. Conteúdo mínimo inicial
 
 A `.workbench` inicial deve registrar apenas contexto mínimo:
 
@@ -264,7 +315,7 @@ A `.workbench` inicial deve registrar apenas contexto mínimo:
 
 A IA não deve inventar requisitos funcionais nessa etapa.
 
-## 14. Saída obrigatória do bootstrap
+## 17. Saída obrigatória do bootstrap
 
 Ao concluir o bootstrap, a IA deve apresentar:
 
@@ -275,12 +326,13 @@ Ao concluir o bootstrap, a IA deve apresentar:
 - branch principal;
 - estrutura universal obrigatória criada e validada;
 - estrutura mínima de docs criada e validada;
+- documentação mínima inicial criada nas subpastas corretas;
 - arquivos `.workbench` criados ou localizados;
 - próximo arquivo a ser lido;
 - bloqueios existentes, se houver.
 ```
 
-## 15. Próximo contexto
+## 18. Próximo contexto
 
 Após bootstrap bem-sucedido, a IA deve transferir o fluxo para:
 
