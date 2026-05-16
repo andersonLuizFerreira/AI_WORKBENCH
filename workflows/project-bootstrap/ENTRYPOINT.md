@@ -74,7 +74,32 @@ A IA deve perguntar ao usuário qual é a situação do projeto:
 
 A IA não deve iniciar entrevista funcional antes de resolver essa classificação inicial.
 
-## 5. ROTA 1 — Novo projeto sem repositório criado
+## 5. Estrutura universal obrigatória
+
+Durante o bootstrap, a IA deve criar e validar a estrutura universal mínima do projeto.
+
+Pastas obrigatórias:
+
+```text
+.workbench/
+docs/
+dumps/
+tests/
+```
+
+REGRA:
+Essas pastas devem existir em todos os projetos governados pela AI_WORKBENCH.
+
+VALIDAÇÃO:
+Antes de concluir o bootstrap, a IA deve verificar se todas as pastas obrigatórias existem.
+
+IF_MISSING:
+Se alguma pasta obrigatória estiver ausente, a IA deve criá-la automaticamente antes de continuar.
+
+LIMITAÇÃO:
+A estrutura universal não define ainda pastas específicas como src/, frontend/, backend/, firmware/, api/, database/ ou infra/. Essas estruturas dependem da classificação e da engenharia do projeto.
+
+## 6. ROTA 1 — Novo projeto sem repositório criado
 
 Quando o projeto ainda não possuir repositório remoto, a IA deve orientar o usuário a criar:
 
@@ -96,7 +121,7 @@ git push
 
 Se a IA/ferramenta não tiver acesso para criar o repositório remoto diretamente, deve orientar o usuário a criá-lo e solicitar a URL depois.
 
-## 6. ROTA 2 — Novo projeto com repositório já criado
+## 7. ROTA 2 — Novo projeto com repositório já criado
 
 Quando o repositório remoto já existir, a IA deve solicitar:
 
@@ -117,7 +142,7 @@ Depois deve validar ou orientar validação de:
 - branch principal correta.
 ```
 
-## 7. ROTA 3 — Projeto existente
+## 8. ROTA 3 — Projeto existente
 
 Quando o projeto já existir, a IA deve solicitar o caminho local do repositório do projeto.
 
@@ -129,7 +154,7 @@ ProjetoAlvo/.workbench/PROJECT_WORKFLOW.md
 ProjetoAlvo/.workbench/CURRENT_STAGE.md
 ```
 
-## 8. Projeto existente com `.workbench`
+## 9. Projeto existente com `.workbench`
 
 Se a pasta `.workbench` existir e os arquivos obrigatórios estiverem presentes, a IA deve:
 
@@ -145,7 +170,7 @@ O arquivo `CURRENT_STAGE.md` é obrigatório para continuidade.
 
 Se `CURRENT_STAGE.md` estiver ausente ou ambíguo, a IA deve parar e tratar como falha de contexto local.
 
-## 9. Projeto existente sem `.workbench`
+## 10. Projeto existente sem `.workbench`
 
 Se o projeto existir, mas não possuir `.workbench`, a IA deve perguntar:
 
@@ -167,7 +192,7 @@ Encaminhar para AI_WORKBENCH/workflows/project-adoption/ENTRYPOINT.md
 
 A IA não deve criar engenharia, documentação ou código antes de seguir a política de adoção.
 
-## 10. Criação da `.workbench` local
+## 11. Criação da `.workbench` local
 
 Quando a rota permitir criação inicial da `.workbench`, a IA deve criar no projeto alvo:
 
@@ -188,7 +213,7 @@ A IA deve:
 - impedir transferência de fluxo com arquivos incompletos.
 ```
 
-## 11. Conteúdo mínimo inicial
+## 12. Conteúdo mínimo inicial
 
 A `.workbench` inicial deve registrar apenas contexto mínimo:
 
@@ -206,7 +231,7 @@ A `.workbench` inicial deve registrar apenas contexto mínimo:
 
 A IA não deve inventar requisitos funcionais nessa etapa.
 
-## 12. Saída obrigatória do bootstrap
+## 13. Saída obrigatória do bootstrap
 
 Ao concluir o bootstrap, a IA deve apresentar:
 
@@ -215,12 +240,13 @@ Ao concluir o bootstrap, a IA deve apresentar:
 - repositório remoto validado ou pendente;
 - pasta local validada ou pendente;
 - branch principal;
+- estrutura universal obrigatória criada e validada;
 - arquivos `.workbench` criados ou localizados;
 - próximo arquivo a ser lido;
 - bloqueios existentes, se houver.
 ```
 
-## 13. Próximo contexto
+## 14. Próximo contexto
 
 Após bootstrap bem-sucedido, a IA deve transferir o fluxo para:
 
