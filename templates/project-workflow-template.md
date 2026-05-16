@@ -54,6 +54,22 @@ CURRENT_IMPLEMENTATION_STATUS:
 
 NEXT_EXPECTED_STEP:
 
+CONTINUITY_RULE:
+A IA não deve encerrar o fluxo apenas recomendando a próxima etapa.
+
+Quando não houver bloqueio, a IA deve:
+
+```text
+1. ler .workbench/PROJECT_ENTRYPOINT.md;
+2. ler .workbench/PROJECT_WORKFLOW.md;
+3. ler .workbench/CURRENT_STAGE.md;
+4. identificar NEXT_EXPECTED_STEP;
+5. executar ou encaminhar imediatamente para o workflow ativo aplicável;
+6. atualizar CURRENT_STAGE.md ao final da ação executada.
+```
+
+A expressão "próxima etapa recomendada" só deve ser usada quando existir bloqueio, falta de permissão, necessidade de decisão humana ou pedido explícito do usuário para apenas planejar.
+
 WORKFLOW_ROUTING_RULE:
 Quando a etapa atual exigir engenharia e arquitetura, a IA deve:
 
