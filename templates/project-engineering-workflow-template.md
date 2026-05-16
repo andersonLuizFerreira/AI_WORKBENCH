@@ -24,7 +24,38 @@ Antes de executar este workflow local, a IA deve ler:
 5. AI_WORKBENCH/docs/workbench-layered-responsibilities.md
 ```
 
-## 3. Pastas de documentação obrigatórias
+## 3. Engenharia baseada em tecnologia
+
+A engenharia do projeto deve ser especializada conforme a stack tecnológica registrada em:
+
+```text
+PROJECT_WORKFLOW.md
+```
+
+Campo esperado:
+
+```text
+PROJECT_TECHNOLOGIES:
+```
+
+Para cada tecnologia registrada, a IA deve:
+
+```text
+1. localizar o template tecnológico correspondente;
+2. ler o template tecnológico;
+3. incorporar suas regras na engenharia local;
+4. adaptar a decomposição à tecnologia utilizada.
+```
+
+Exemplos:
+
+```text
+AI_WORKBENCH/templates/project-engineering/csharp-engineering-template.md
+AI_WORKBENCH/templates/project-engineering/angular-engineering-template.md
+AI_WORKBENCH/templates/project-engineering/arduino-engineering-template.md
+```
+
+## 4. Pastas de documentação obrigatórias
 
 A IA deve validar:
 
@@ -37,7 +68,7 @@ docs/validation/
 
 Se ausentes, criar antes de continuar.
 
-## 4. Ciclo progressivo de engenharia
+## 5. Ciclo progressivo de engenharia
 
 A engenharia deve evoluir em ciclos:
 
@@ -59,7 +90,7 @@ Unidades atômicas
 Pronto para script de codação
 ```
 
-## 5. Regra de decomposição
+## 6. Regra de decomposição
 
 A IA deve quebrar o escopo apenas até o nível necessário para eliminar ambiguidade técnica e permitir implementação segura.
 
@@ -74,7 +105,7 @@ A IA não deve gerar script de codação enquanto houver:
 - risco estrutural não registrado.
 ```
 
-## 6. Definição de unidade atômica
+## 7. Definição de unidade atômica
 
 Uma unidade atômica está pronta para virar script de codação quando possuir:
 
@@ -91,7 +122,7 @@ Uma unidade atômica está pronta para virar script de codação quando possuir:
 - critério de conclusão.
 ```
 
-## 7. Saídas documentais esperadas
+## 8. Saídas documentais esperadas
 
 A IA deve gerar ou atualizar documentação em:
 
@@ -111,7 +142,7 @@ A documentação deve ser suficiente para sustentar futura criação de:
 - etapas de implementação.
 ```
 
-## 8. Regra de parada
+## 9. Regra de parada
 
 A IA deve parar quando a decomposição encontrar decisão arquitetural, ambiguidade crítica ou risco de inventar regra.
 
@@ -125,7 +156,7 @@ Ao parar, deve registrar:
 - arquivo onde a decisão será registrada.
 ```
 
-## 9. Próximo fluxo
+## 10. Próximo fluxo
 
 Quando houver unidade atômica aprovada, o próximo fluxo será:
 
