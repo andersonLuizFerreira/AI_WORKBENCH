@@ -38,14 +38,41 @@ LOCAL_WORKFLOW: .workbench/PROJECT_WORKFLOW.md
 LOCAL_CURRENT_STAGE: .workbench/CURRENT_STAGE.md
 ```
 
-## 5. Workflow ativo
+## 5. Estrutura universal obrigatória
+
+A IA deve validar e manter a estrutura universal mínima do projeto.
+
+```text
+REQUIRED_DIRECTORIES:
+- .workbench/
+- docs/
+- dumps/
+- tests/
+```
+
+REGRA:
+Essas pastas devem existir em todo projeto governado pela AI_WORKBENCH.
+
+VALIDAÇÃO:
+Ao consumir este PROJECT_ENTRYPOINT.md, a IA deve verificar se todas as pastas em REQUIRED_DIRECTORIES existem no projeto local.
+
+IF_MISSING:
+Se qualquer pasta obrigatória estiver ausente, a IA deve criá-la automaticamente antes de continuar o fluxo.
+
+BLOCKING_RULE:
+A IA não deve iniciar engenharia, documentação, criação de skills, script de codação ou implementação enquanto a estrutura universal obrigatória estiver incompleta.
+
+LIMITAÇÃO:
+A estrutura universal não define ainda pastas específicas como src/, frontend/, backend/, firmware/, api/, database/ ou infra/. Essas pastas dependem da classificação e da engenharia do projeto.
+
+## 6. Workflow ativo
 
 ```text
 ACTIVE_WORKFLOW: <workflow atual ou nao_definido>
 NEXT_CONTEXT: .workbench/PROJECT_WORKFLOW.md
 ```
 
-## 6. Regra de prioridade local/global
+## 7. Regra de prioridade local/global
 
 ```text
 LOCAL_RULE_PRIORITY:
@@ -53,7 +80,7 @@ As regras locais deste projeto sao verdadeiras enquanto sua cobertura existir.
 Quando a cobertura acabar, consultar a WB antes de decidir.
 ```
 
-## 7. Regras de bloqueio local
+## 8. Regras de bloqueio local
 
 A IA deve parar se:
 
@@ -61,23 +88,26 @@ A IA deve parar se:
 - este arquivo possuir placeholders não preenchidos;
 - PROJECT_WORKFLOW.md estiver ausente;
 - CURRENT_STAGE.md estiver ausente;
+- qualquer pasta em REQUIRED_DIRECTORIES estiver ausente e não puder ser criada;
 - o estágio atual estiver ambíguo;
 - houver conflito entre regra local e regra global;
 - a cobertura local acabar e não houver regra global aplicável.
 ```
 
-## 8. Próximo passo obrigatório
+## 9. Próximo passo obrigatório
 
-Após ler este arquivo, a IA deve ler:
+Após ler este arquivo, a IA deve:
 
 ```text
-1. .workbench/PROJECT_WORKFLOW.md
-2. .workbench/CURRENT_STAGE.md
+1. validar REQUIRED_DIRECTORIES;
+2. criar pastas obrigatórias ausentes, se necessário;
+3. ler .workbench/PROJECT_WORKFLOW.md;
+4. ler .workbench/CURRENT_STAGE.md.
 ```
 
 Depois deve seguir o workflow ativo registrado no projeto local.
 
-## 9. Regra contra template cru
+## 10. Regra contra template cru
 
 Este arquivo não deve ser consumido como contexto local válido se ainda contiver campos no formato:
 
